@@ -38,6 +38,11 @@ ORDER BY c.email
 LIMIT 5;
 
 -- Ejercicio 5: Extrae los primeros 4 nombres de salas y fechas de proyecciones para películas cuyo nombre contenga un patrón, renombrando las columnas y ordenando por fecha
+SELECT r.name AS screening_room, s.start_time AS show_time FROM rooms r 
+INNER JOIN screenings s ON r.id = s.room_id
+WHERE s.film_id IN(SELECT id FROM films WHERE name LIKE '%O%')
+ORDER BY s.start_time DESC
+LIMIT 4;
 
 -- Ejercicio 6: Lista los primeros 3 nombres únicos de clientes que reservaron proyecciones de películas de duración en un rango, renombrando el nombre y ordenando por identificador
 
