@@ -1,10 +1,32 @@
 USE cinema_booking_system;
 
+SHOW TABLES;
+SELECT * FROM bookings;
+SELECT * FROM customers;
+SELECT * FROM films;
+SELECT * FROM reserved_seat;
+SELECT * FROM rooms;
+SELECT * FROM screenings;
+SELECT * FROM seats;
+
 
 -- Ejercicio 1: Obtén los primeros 5 nombres de películas y nombres de salas para proyecciones que comiencen en un mes específico, renombrando las columnas y ordenando por fecha de inicio
-
+SELECT f.name AS movie_name, r.name AS room_name FROM films f
+INNER JOIN screenings s ON f.id = s.film_id
+INNER JOIN rooms r ON   r.id = s.room_id
+WHERE start_time LIKE '2022-01%' 
+ORDER BY s.start_time ASC
+LIMIT 5;
 
 -- Ejercicio 2: Lista los primeros 4 nombres de clientes con apellidos que contengan un patrón y hayan reservado asientos en una sala específica, renombrando el nombre y ordenando por apellido
+SELECT DISTINCT c.first_name AS customer_name, c.last_name AS customer_last_name,r.name FROM customers c
+INNER JOIN bookings b ON c.id  = b.customer_id
+INNER JOIN screenings s ON s.id = b.screening_id
+INNER JOIN rooms r ON r.id = s.room_id
+WHERE last_name LIKE '%son' AND r.name = 'Chaplin'
+ORDER BY last_name 
+LIMIT 4;
+
 
 
 -- Ejercicio 3: Muestra los primeros 3 nombres únicos de películas proyectadas en salas con un número de asientos en un rango, renombrando el nombre y ordenando por duración
