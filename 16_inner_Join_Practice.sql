@@ -115,14 +115,37 @@ ORDER BY s.id DESC
 LIMIT 3;
 
 -- Ejercicio 16: Obtén los primeros 5 identificadores de reservas y identificadores de asientos reservados para reservas con identificadores no en un grupo, renombrando las columnas y ordenando por identificador
-
+SELECT b.id AS Reservation_id, rs.id AS Reserved_Seat_id FROM bookings b
+INNER JOIN reserved_seat rs ON b.id = rs.booking_id
+WHERE b.id NOT IN(1,2,3,4,5)
+ORDER BY b.id ASC
+LIMIT 5;
 
 -- Ejercicio 17: Extrae los primeros 4 nombres de salas y fechas de proyecciones para proyecciones con fechas en un rango, renombrando las columnas y ordenando por fecha
+SELECT r.name AS Room_Name, s.start_time AS Show_time FROM rooms r 
+INNER JOIN screenings s ON r.id = s.room_id
+WHERE s.start_time BETWEEN '2022-06-01' AND '2022-09-30'
+ORDER BY s.start_time DESC
+LIMIT 4;
 
 -- Ejercicio 18: Lista los primeros 3 nombres únicos de clientes que hicieron reservas para proyecciones con identificadores en un rango, renombrando el nombre y ordenando por identificador
-
+SELECT DISTINCT c.id AS Client_id, c.first_name AS  Client_Name FROM Customers c
+INNER JOIN bookings b ON c.id = b.customer_id
+WHERE b.screening_id BETWEEN 10 AND 30
+ORDER BY c.id ASC
+LIMIT 3;
 
 -- Ejercicio 19: Muestra los primeros 5 nombres de películas y fechas de proyecciones para proyecciones con identificadores en un grupo, renombrando las columnas y ordenando por fecha
-
+SELECT f.name AS Movie_name, s.start_time AS Show_Time FROM films f 
+INNER JOIN screenings s ON f.id = s.film_id
+WHERE s.id IN(1,2,3,4,5,6,7,8,9,20)
+ORDER BY s.start_time
+LIMIT 5;
 
 -- Ejercicio 20: Obtén los primeros 4 correos únicos de clientes que hicieron reservas para proyecciones con identificadores en un grupo, renombrando el correo y ordenando alfabéticamente
+SELECT DISTINCT c.email AS EmailAddress 
+FROM customers c 
+INNER JOIN bookings b ON c.id = b.customer_id 
+WHERE b.screening_id IN (1, 10, 20, 30) 
+ORDER BY c.email ASC 
+LIMIT 4;
