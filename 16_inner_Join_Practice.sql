@@ -45,31 +45,65 @@ ORDER BY s.start_time DESC
 LIMIT 4;
 
 -- Ejercicio 6: Lista los primeros 3 nombres únicos de clientes que reservaron proyecciones de películas de duración en un rango, renombrando el nombre y ordenando por identificador
+SELECT DISTINCT c.id, c.first_name AS client_name FROM customers c
+INNER JOIN bookings b ON c.id = b.customer_id
+WHERE b.screening_id IN (SELECT id FROM screenings WHERE film_id IN (SELECT id FROM films WHERE length_min BETWEEN 90 AND 110)) 
+ORDER BY c.id ASC 
+LIMIT 3;
 
--- Ejercicio 7: Muestra los primeros 5 identificadores de reservas y filas de asientos para proyecciones en un año específico, renombrando las columnas y ordenando por identificador
+-- Ejercicio 7: Muestra los primeros 5 identificadores de reservas y identificadores de asientos reservados, renombrando las columnas y ordenando por identificador de reserva.
+SELECT b.id AS Booking_id, rs.id AS Seat_id FROM bookings b
+INNER JOIN reserved_seat rs ON b.id = rs.booking_id
+WHERE b.id BETWEEN 1 AND 50
+ORDER BY b.id ASC
+LIMIT 5;
 
--- Ejercicio 8: Obtén los primeros 4 nombres de películas y correos de clientes que hicieron reservas para proyecciones antes de una fecha, renombrando las columnas y ordenando por fecha
+-- Ejercicio 8: Obtén los primeros 4 nombres de películas y fechas de proyecciones con identificadores en un grupo, renombrando las columnas y ordenando por identificador.
+SELECT f.name AS Movie_Name, s.start_time AS Show_Date FROM films f
+INNER JOIN screenings s ON f.id = s.film_id
+WHERE s.id IN(1,2,3,4,5,6,7,8,9,10)
+ORDER BY f.id
+LIMIT 4;
 
 -- Ejercicio 9: Extrae los primeros 3 nombres únicos de clientes que reservaron asientos en filas específicas, renombrando el nombre y ordenando por identificador
+SELECT DISTINCT c.id AS Client_id , c.first_name AS Client_Name FROM customers c
+INNER JOIN bookings b ON c.id = b.customer_id
+WHERE b.id IN (SELECT booking_id FROM reserved_seat WHERE seat_id IN (SELECT id FROM seats WHERE seat_row IN ('A', 'B'))) 
+ORDER BY c.id ASC 
+LIMIT 3;
 
--- Ejercicio 10: Lista los primeros 5 nombres de salas y duraciones de películas proyectadas en un rango de fechas, renombrando las columnas y ordenando por duración descendente
+-- Ejercicio 10: Lista los primeros 5 nombres de salas y fechas de proyecciones en un rango de fechas, renombrando las columnas y ordenando por fecha.
+SELECT r.name AS RoomName, s.start_time AS ShowDate FROM rooms r 
+INNER JOIN screenings s ON r.id = s.room_id 
+WHERE s.start_time BETWEEN '2022-02-01' AND '2022-04-30' 
+ORDER BY s.start_time DESC 
+LIMIT 5;
 
--- Ejercicio 11: Muestra los primeros 4 correos únicos de clientes con nombre nulo que reservaron proyecciones, renombrando el correo y ordenando alfabéticamente
+-- Ejercicio 11: Muestra los primeros 4 correos únicos de clientes con nombre nulo que hicieron reservas, renombrando el correo y ordenando alfabéticamente
 
--- Ejercicio 12: Obtén los primeros 3 identificadores únicos de proyecciones y números de asientos reservados en una sala específica, renombrando las columnas y ordenando por identificador
 
--- Ejercicio 13: Extrae los primeros 5 nombres de películas y fechas de proyecciones para clientes con apellidos que comiencen con una letra, renombrando las columnas y ordenando por fecha
+-- Ejercicio 12: Obtén los primeros 3 identificadores únicos de proyecciones y nombres de salas para proyecciones en un rango de identificadores, renombrando las columnas y ordenando por identificador
 
--- Ejercicio 14: Lista los primeros 4 nombres únicos de clientes que reservaron proyecciones de películas con duración en un rango, renombrando el nombre y ordenando por identificador
 
--- Ejercicio 15: Muestra los primeros 3 nombres de películas proyectadas para clientes con correos de un dominio específico, renombrando el nombre y ordenando por duración
+-- Ejercicio 13: Extrae los primeros 5 nombres de películas y fechas de proyecciones para proyecciones con identificadores en un grupo, renombrando las columnas y ordenando por fecha
 
--- Ejercicio 16: Obtén los primeros 5 identificadores de reservas y filas de asientos para proyecciones que no sean de ciertas películas, renombrando las columnas y ordenando por identificador
 
--- Ejercicio 17: Extrae los primeros 4 nombres de salas y fechas de proyecciones para clientes con correos que terminen en un patrón, renombrando las columnas y ordenando por fecha
+-- Ejercicio 14: Lista los primeros 4 nombres únicos de clientes que hicieron reservas con identificadores en un rango, renombrando el nombre y ordenando por identificador
 
--- Ejercicio 18: Lista los primeros 3 nombres únicos de clientes que reservaron proyecciones de películas con duración mayor a un valor, renombrando el nombre y ordenando por identificador
 
--- Ejercicio 19: Muestra los primeros 5 nombres de películas y números de asientos para reservas hechas por clientes con apellido en un grupo, renombrando las columnas y ordenando por número de asiento
+-- Ejercicio 15: Muestra los primeros 3 nombres de películas proyectadas en salas con nombres que contengan un patrón, renombrando el nombre y ordenando por duración
 
--- Ejercicio 20: Obtén los primeros 4 correos únicos de clientes que reservaron proyecciones en un rango de fechas, renombrando el correo y ordenando alfabéticamente
+
+-- Ejercicio 16: Obtén los primeros 5 identificadores de reservas y filas de asientos para reservas con identificadores no en un grupo, renombrando las columnas y ordenando por identificador
+
+
+-- Ejercicio 17: Extrae los primeros 4 nombres de salas y fechas de proyecciones para proyecciones con fechas en un rango, renombrando las columnas y ordenando por fecha
+
+
+-- Ejercicio 18: Lista los primeros 3 nombres únicos de clientes que hicieron reservas para proyecciones con identificadores en un rango, renombrando el nombre y ordenando por identificador
+
+
+-- Ejercicio 19: Muestra los primeros 5 nombres de películas y números de asientos para reservas con identificadores en un rango, renombrando las columnas y ordenando por número de asiento
+
+
+-- Ejercicio 20: Obtén los primeros 4 correos únicos de clientes que hicieron reservas para proyecciones con fechas en un rango, renombrando el correo y ordenando alfabéticamente
