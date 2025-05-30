@@ -132,7 +132,6 @@ SELECT * FROM rooms;
 SELECT * FROM screenings;
 SELECT * FROM seats; 
 
-
 -- Ejercicio 1: Cuenta el número total de reservas por cliente, mostrando el nombre y el conteo, ordenado por conteo descendente
 SELECT c.first_name, count(b.customer_id) AS Total_Bookings FROM customers c
 JOIN bookings b ON c.id = b.customer_id
@@ -212,18 +211,48 @@ ORDER BY Reserved_Seat_Avg
 LIMIT 5;
 
 -- Ejercicio 11: Cuenta las proyecciones por película, mostrando el nombre y el conteo, con más de 5 proyecciones
-
+SELECT f.name AS Movie_Name, count(s.id) Screening_Count FROM films f 
+JOIN screenings s ON s.film_id = f.id
+GROUP BY f.name
+HAVING Screening_Count > 5
+ORDER BY Screening_Count
+LIMIT 5;
 
 -- Ejercicio 12: Suma las duraciones de películas por mes en 2022, mostrando el mes
-
-
+SELECT month(s.start_time) AS Month, sum(f.length_min) AS Min_Duration FROM screenings s 
+JOIN films f ON f.id = s.film_id
+WHERE year(s.start_time) = 2022
+GROUP BY month(s.start_time)
+ORDER BY Month ASC
+LIMIT 12;
 -- Ejercicio 13: Encuentra la duración mínima de películas por sala con más de 2 proyecciones
-
+SELECT r.name AS Room_Name, min(f.length_min) AS Min_Duration FROM rooms r 
+JOIN screenings s ON s.room_id = r.id
+JOIN films f ON f.id = s.film_id
+GROUP BY r.name
+HAVING count(s.id) > 2
+ORDER BY Min_Duration
+LIMIT 3;
 
 -- Ejercicio 14: Encuentra la duración máxima de películas por cliente con más de 1 reserva
+SELECT c.first_name AS Client_Name, max(f.length_min) AS Movie_Max_Length FROM customers c
+JOIN bookings b ON b.customer_id = c.id
+JOIN screenings s ON b.screening_id  = s.id
+JOIN films f ON f.id = s.film_id
+GROUP BY c.first_name
+HAVING count(b.id) > 1
+ORDER BY Movie_Max_Length
+LIMIT 5;
 
 -- Ejercicio 15: Calcula el promedio de duración de películas por mes en 2022 con más de 10 proyecciones
-
+SELECT MONTH(s.start_time) AS Month, AVG(f.length_min) AS AvgDuration 
+FROM screenings s 
+INNER JOIN films f ON s.film_id = f.id 
+WHERE YEAR(s.start_time) = 2022 
+GROUP BY MONTH(s.start_time) 
+HAVING COUNT(s.id) > 10 
+ORDER BY AvgDuration DESC 
+LIMIT 3;
 
 -- Ejercicio 16: Cuenta las reservas por cliente con apellidos que contengan un patrón, ordenado por conteo
 
