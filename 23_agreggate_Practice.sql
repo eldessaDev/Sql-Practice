@@ -173,18 +173,43 @@ ORDER BY Length_Average
 LIMIT 3;
 
 -- Ejercicio 6: Cuenta las reservas por mes en 2022, mostrando el mes y el conteo, ordenado por mes
+SELECT year(s.start_time) AS Year, month(s.start_time) AS Month, count(b.id) AS Number_Of_Bookings FROM screenings s 
+JOIN bookings b ON b.screening_id = s.id
+GROUP BY Month, year 
+ORDER BY year 
+LIMIT 24;
 
 -- Ejercicio 7: Suma el número total de asientos reservados por reserva, mostrando el identificador de reserva
-
+SELECT b.id AS Booking_id, sum(rs.id) AS Total_Reserved_Seats  FROM bookings b
+JOIN reserved_seat rs ON rs.booking_id = b.id
+GROUP BY b.id
+ORDER BY Total_Reserved_Seats
+LIMIT 5;
 
 -- Ejercicio 8: Encuentra la duración mínima de películas proyectadas antes de una fecha, agrupadas por sala
-
+SELECT r.name AS Room_Name, f.name AS Movie_Name, min(f.length_min) Min_Length FROM rooms r
+JOIN screenings s ON s.room_id = r.id
+JOIN films f  ON f.id = s.film_id
+WHERE s.start_time < '2023-05-20'
+GROUP BY r.name, f.name
+ORDER BY r.name
+LIMIT 3;
 
 -- Ejercicio 9: Encuentra la duración máxima de películas con reservas, agrupadas por cliente
-
+SELECT c.first_name, c.last_name, max(f.length_min) AS Max_Movie_Duration FROM customers c 
+JOIN bookings b ON b.customer_id = c.id
+JOIN screenings s ON s.id = b.screening_id
+JOIN films f ON f.id = s.film_id
+GROUP BY c.first_name, c.last_name
+ORDER BY Max_Movie_Duration DESC
+LIMIT 5;
 
 -- Ejercicio 10: Calcula el promedio de asientos reservados por reserva, mostrando el identificador
-
+SELECT b.id AS Booking_id, avg(rs.id) AS Reserved_Seat_Avg FROM bookings b 
+JOIN reserved_seat rs ON rs.booking_id = b.id
+GROUP BY b.id
+ORDER BY Reserved_Seat_Avg
+LIMIT 5;
 
 -- Ejercicio 11: Cuenta las proyecciones por película, mostrando el nombre y el conteo, con más de 5 proyecciones
 
