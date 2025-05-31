@@ -255,20 +255,48 @@ ORDER BY AvgDuration DESC
 LIMIT 3;
 
 -- Ejercicio 16: Cuenta las reservas por cliente con apellidos que contengan un patrón, ordenado por conteo
-
+SELECT c.first_name AS Client_Name, c.last_name AS Last_Name, count(b.id) AS Booking_Count FROM customers c 
+JOIN Bookings b ON b.customer_id = c.id
+WHERE c.last_name LIKE '%th%'
+GROUP BY c.last_name, c.first_name
+LIMIT 10;
 
 -- Ejercicio 17: Suma las duraciones de películas por sala con proyecciones después de una fecha
-
+SELECT r.name AS Room_Name, sum(f.length_min) AS Movie_Duration FROM rooms r 
+JOIN screenings s ON s.room_id = r.id
+JOIN films f ON s.film_id = f.id
+WHERE s.start_time > '2023-01-01'
+GROUP BY r.name
+ORDER BY Movie_Duration
+LIMIT 5;
 
 -- Ejercicio 18: Encuentra la duración mínima de películas por cliente con reservas en un rango de fechas
-
+SELECT c.first_name AS Client_Name, min(f.length_min) AS Min_Movie_Length FROM customers c
+JOIN bookings b ON b.customer_id = c.id
+JOIN screenings s ON b.screening_id = s.id
+JOIN films f ON f.id = s.film_id
+WHERE s.start_time BETWEEN '2022-01-01' AND '2022-12-31'
+GROUP BY c.first_name
+ORDER BY Min_Movie_Length ASC
+LIMIT 5;
 
 -- Ejercicio 19: Calcula el promedio de asientos reservados por reserva con más de 2 asientos
-
+SELECT b.id AS Booking_id, avg(rs.id) AS Avg_Reserved_Seat_id FROM bookings b 
+JOIN reserved_seat rs ON b.id = rs.booking_id
+GROUP BY b.id
+HAVING count(rs.id) > 2
+ORDER BY Avg_Reserved_Seat_id
+LIMIT 5;
 
 -- Ejercicio 20: Cuenta las proyecciones por sala con duración promedio superior a 110 minutos
-
-
+SELECT r.name AS RoomName, COUNT(s.id) AS ScreeningCount 
+FROM rooms r 
+INNER JOIN screenings s ON r.id = s.room_id 
+INNER JOIN films f ON s.film_id = f.id 
+GROUP BY r.name 
+HAVING AVG(f.length_min) > 110 
+ORDER BY ScreeningCount DESC 
+LIMIT 3;
 
 
 
